@@ -27,3 +27,20 @@ class Artwork(models.Model):
 
 	def __str__(self):
 		return self.product_num
+
+class product(models.Model):
+	proname = models.CharField(max_length=20, blank=True, null=True)
+	proprice = models.IntegerField(blank=True, null=True)
+	procont = models.CharField(max_length=255,blank=True, null=True)
+	pronum = models.IntegerField(blank=True, null=True)
+	proimg = models.CharField(max_length=255,blank=True, null=True)
+	procate = models.CharField(max_length=20, blank=True, null=True)
+	proid = models.CharField(primary_key=True,max_length=45, blank=True)
+	def __str__(self):
+		return self.proname
+
+class cate(models.Model):
+	cateid = models.AutoField(primary_key=True)
+	catename = models.CharField(max_length=10, blank=True, null=True)
+	def __str__(self):
+		return self.catename

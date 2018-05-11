@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Artwork
+from .models import Artwork,product,cate
 from django.template.loader import get_template
 import random
 # Create your views here.
@@ -15,9 +15,42 @@ def homepage(request):
 	template = get_template('index.html')
 	#tags = '1.shop\n'+'2.artwork\n'+'3.tea'
 	html = template.render()
-
 	return HttpResponse(html)
-	
+def homepage2(request):
+	template = get_template('index.html')
+	catedict = cate.objects.all()
+	if 'cate' in request.GET:
+		prodict = product.objects.filter(procate = request.GET['cate'])
+		#if prodict.exists():
+		html = template.render({'prodict':prodict,'catedict':catedict})
+		return HttpResponse(html)
+		'''		
+		else:
+			prodict = product.objects.filter(procate = request.GET['cate'])
+			html = template.render({'prodict':prodict,'catedict':catedict})
+			return HttpResponse(html)
+		'''
+	else:
+		prodict = product.objects.all()
+		html = template.render({'prodict':prodict,'catedict':catedict})
+		return HttpResponse(html)
+
+def buy(request):
+	catedict = cate.objects.all()
+	template = get_template('index.html')
+	if 'proid' in request.GET:
+		prodict = product.objects.filter(proid = request.GET['proid'])
+		if prodict.exists():
+			html = template.render({'prodict':prodict,'catedict':catedict})
+			return HttpResponse(html)
+		else:
+			prodict = product.objects.all()
+			html = template.render({'prodict':prodict,'catedict':catedict})
+			return HttpResponse(html)
+	else:
+		prodict = product.objects.all()
+		html = template.render({'prodict':prodict,'catedict':catedict})
+		return HttpResponse(html)
 def artwork_page(request):
 	html = '''
 <!DOCTYPE html>

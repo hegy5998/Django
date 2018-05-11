@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from .models import Artwork,product,cate
 from django.template.loader import get_template
 import random
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 # Create your views here.
 
 def about(request):
@@ -51,6 +54,13 @@ def buy(request):
 		prodict = product.objects.all()
 		html = template.render({'prodict':prodict,'catedict':catedict})
 		return HttpResponse(html)
+@csrf_exempt
+def nickname(request):
+	if request.method == 'POST':   #當request为POST的时候
+		nickname = request.POST.get('nickname', None)  #獲取ajax POST的nickname值
+		data = {"nickname":nickname}
+		return JsonResponse(data)  #為了方便显示，直接在浏览器显示nickname
+
 def artwork_page(request):
 	html = '''
 <!DOCTYPE html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Artwork,product,cate
+from .models import *
 from django.template.loader import get_template
 import random
 import json
@@ -19,11 +19,12 @@ def homepage(request):
 	#tags = '1.shop\n'+'2.artwork\n'+'3.tea'
 	html = template.render()
 	return HttpResponse(html)
+
 def homepage2(request):
 	template = get_template('index.html')
-	catedict = cate.objects.all()
+	catedict = Cate.objects.all()
 	if 'cate' in request.GET:
-		prodict = product.objects.filter(procate = request.GET['cate'])
+		prodict = Product.objects.filter(procate = request.GET['cate'])
 		#if prodict.exists():
 		html = template.render({'prodict':prodict,'catedict':catedict})
 		return HttpResponse(html)
@@ -34,32 +35,34 @@ def homepage2(request):
 			return HttpResponse(html)
 		'''
 	else:
-		prodict = product.objects.all()
+		prodict = Product.objects.all()
 		html = template.render({'prodict':prodict,'catedict':catedict})
 		return HttpResponse(html)
 
 def buy(request):
-	catedict = cate.objects.all()
-	template = get_template('index.html')
+	catedict = Cate.objects.all()
+	template = get_template('buy.html')
 	if 'proid' in request.GET:
-		prodict = product.objects.filter(proid = request.GET['proid'])
+		prodict = Product.objects.filter(proid = request.GET['proid'])
 		if prodict.exists():
 			html = template.render({'prodict':prodict,'catedict':catedict})
 			return HttpResponse(html)
 		else:
-			prodict = product.objects.all()
+			template = get_template('index.html')
+			prodict = Product.objects.all()
 			html = template.render({'prodict':prodict,'catedict':catedict})
 			return HttpResponse(html)
 	else:
-		prodict = product.objects.all()
+		template = get_template('index.html')
+		prodict = Product.objects.all()
 		html = template.render({'prodict':prodict,'catedict':catedict})
 		return HttpResponse(html)
 @csrf_exempt
 def nickname(request):
-	if request.method == 'POST':   #當request为POST的时候
+	if request.method == 'POST':   #當request為POST的时候
 		nickname = request.POST.get('nickname', None)  #獲取ajax POST的nickname值
 		data = {"nickname":nickname}
-		return JsonResponse(data)  #為了方便显示，直接在浏览器显示nickname
+		return JsonResponse(data)  #回傳JSON字串
 
 def artwork_page(request):
 	html = '''

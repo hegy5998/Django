@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Shop Homepage</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/shop-homepage.css' %}" rel="stylesheet">
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script type="text/javascript">
+        //使用jQuery設定觸發事件
+        $('button[name="proid"]').click(function(){ 
+            //$(this)抓取是哪一個按鈕
+            var nickname = $(this).val();
+            $.ajax({
+                url:"/nickname/",
+                type:"post",
+                data:{"nickname":nickname},
+                dataType:"json",
+                success:function(data){
+                $(".name_value").text(data['nickname'])
+                }
+            });
+            });
+    </script>
+  </head>
+  <body>
+    <!-- 匯入功能列表-->
+   {% include 'index_header.html'%}
+    <!-- Page Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3">
+          <h1 class="my-4">鬍子的寶庫</h1>
+          <div class="list-group">
+          {% for catedict in catedict %}
+            <a href="/homepage/?cate={{catedict.cateid}}" class="list-group-item">{{catedict.catename}}</a>
+          {% endfor %}
+          </div>
+        </div>
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+          <!-- 匯入廣告列表-->
+          {% include 'index_adv.html'%}
+          <div class="row" style="border-color: rgba(0, 0, 0, 0.17);border-width: 1px;border-style: solid;border-radius: 4px;padding: 13px 0px 10px;margin-bottom: 10px;">
+            {% for prodict in prodict%}
+                <div class="col-lg-4">
+                    <img class="card-img-top" src='../static/{{prodict.proimg}}'/>
+                </div>
+                <div class="col-lg-8">
+                    <h1 class="card-title">
+                    {{prodict.proname}}
+                    </h1>
+                    {% autoescape off %}
+                        {{prodict.procont}}
+                    {% endautoescape %}
+                    <h5 style="text-align: right;">優惠價<span style="color: #ff007c;font-size: 30px;">${{prodict.proprice}}</span></h5>
+                    <div class="row justify-content-end">
+                            <div class="col-lg-2 col-md-1 col-xs-9 justify-content-end" style="text-align: right;width:auto;">
+                                <select class="form-control" style="height: 100%;width:60px">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                                    <!--<p class="card-text">{{prodict.procont}}</p>-->    
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-3" style="text-align: right;width:auto;">
+                                <form action="/buy/" method="GET">
+                                    <button id="{{prodict.proid}}" name="proid" type="submit" value="{{prodict.proid}}" class="btn btn-info">加入購物車</button>
+                                </form>
+                            </div>  
+                    </div>
+                          
+                </div>
+            {% endfor %}
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.col-lg-9 -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+  </body>
+</html>

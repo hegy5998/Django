@@ -1,14 +1,6 @@
 from django.contrib import admin
-from .models import Artwork,Shop
+from .models import *
 
-class Artworkadmin(admin.ModelAdmin):
-	list_display = ('product_num','name','artist','price','shop')
-
-class Shopadmin(admin.ModelAdmin):
-	list_display = ('adress','name','phone_number')
-
-admin.site.register(Shop,Shopadmin)
-admin.site.register(Artwork,Artworkadmin)
 '''
 from .models import Shop,Artwork,Tea
 # Register your models here.

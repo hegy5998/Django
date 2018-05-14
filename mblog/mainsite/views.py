@@ -23,14 +23,24 @@ def homepage(request):
 def homepage2(request):
 	template = get_template('index.html')
 	catedict = Cate.objects.all()
-	if 'cate' in request.GET:
+	ifint = False
+	#判斷分類參數是否為整數
+	if('cate' in request.GET and request.GET['cate'].isdigit()):
+		ifint = True
+	#判斷是否有分類以及搜尋參數
+	if 'cate' in request.GET and ifint:
 		prodict = Product.objects.filter(procate = request.GET['cate'])
-		#if prodict.exists():
+	if ('nam' in request.GET) and ('cate' in request.GET) and ifint:
+		prodict = Product.objects.filter(procate = request.GET['cate'],proname__contains = request.GET['nam'])
+	elif('nam' in request.GET):
+		prodict = Product.objects.filter(proname__contains = request.GET['nam'])
+	#要同時符合有分類參數以及分類參數為int，或是有搜尋參數，如果都沒有則搜出全部活動
+	if ('cate' in request.GET and ifint) or ('nam' in request.GET):
 		html = template.render({'prodict':prodict,'catedict':catedict})
 		return HttpResponse(html)
 		'''		
 		else:
-			prodict = product.objects.filter(procate = request.GET['cate'])
+			prodict = Product.objects.filter(procate = request.GET['cate'])
 			html = template.render({'prodict':prodict,'catedict':catedict})
 			return HttpResponse(html)
 		'''

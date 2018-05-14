@@ -20,11 +20,15 @@
       <div class="row">
         <div class="col-lg-3">
           <h1 class="my-4">鬍子的寶庫</h1>
-          <div class="list-group">
-          {% for catedict in catedict %}
-            <a href="/homepage/?cate={{catedict.cateid}}" class="list-group-item">{{catedict.catename}}</a>
-          {% endfor %}
-          </div>
+            <div class="row" style="margin-right: 0px;margin-left: 0px;margin-bottom: 10px;flex-direction: column;">
+                <div class="input-group">
+                    <input id="SearchTxt" placeholder="輸入商品名稱" class="form-control input-lg" type="text">
+                    <span class="input-group-btn">
+                      <button name="nam" class="btn btn-primary btn-lg" style="border-bottom-left-radius: 0;border-top-left-radius: 0;">查詢</button>
+                    </span>
+                  </div>
+            </div>
+          {% include 'index_category.html'%}
         </div>
         <!-- /.col-lg-3 -->
         <div class="col-lg-9">
@@ -40,14 +44,16 @@
                     <a href="/buy/?proid={{prodict.proid}}">{{prodict.proname}}</a>
                   </h4>
                   <h5>${{prodict.proprice}}</h5>
-                  <!--<p class="card-text">{{prodict.procont}}</p>-->
-                  {% autoescape off %}
+                  <!--<p class="card-text">{{prodict.procont}}</p>-->      
+                  <div style="overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:3;">
+                    {% autoescape off %}  
                       {{prodict.procont}}
-                  {% endautoescape %}
+                    {% endautoescape %}
+                  </div>  
                 </div>
-                <div class="card-footer">
+                <div class="card-footer" style="padding: 0;">
                   <form action="/buy/" method="GET">
-                    <button id="{{prodict.proid}}" name="proid" type="submit" value="{{prodict.proid}}" class="btn btn-info">加入購物車</button>
+                    <button id="{{prodict.proid}}" name="proid" type="submit" value="{{prodict.proid}}" class="btn btn-info" style="width:100%;border-top-right-radius: 0;border-top-left-radius: 0;">加入購物車</button>
                     </form>
                 </div>
               </div>
@@ -67,7 +73,6 @@
       <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
       </div>
-      <!-- /.container -->
     </footer>
 
     <!-- Bootstrap core JavaScript -->
@@ -87,6 +92,35 @@
                 $(".name_value").text(data['nickname'])
               }
             });
+          });
+          $('button[name="nam"]').click(function(){ 
+            var cate = ""
+            var url = location.href;
+            if(url.indexOf('?')!=-1)
+            {
+                //之後去分割字串把分割後的字串放進陣列中
+                var ary1 = url.split('?');
+                //此時ary1裡的內容為：
+                //ary1[0] = 'index.aspx'，ary2[1] = 'id=U001&name=GQSM'
+                
+                //下一步把後方傳遞的每組資料各自分割
+                var ary2 = ary1[1].split('&');
+                //此時ary2裡的內容為：
+                //ary2[0] = 'id=U001'，ary2[1] = 'name=GQSM'
+                
+                //最後如果我們要找id的資料就直接取ary[0]下手，name的話就是ary[1]
+                var ary3 = ary2[0].split('=');
+                //此時ary3裡的內容為：
+                //ary3[0] = 'id'，ary3[1] = 'U001'
+                for(x = 0 ; x < ary3.length ; x++)
+                {
+                  if(ary3[x] == "cate")
+                    cate = ary3[x+1]
+                } 
+                window.location = '../homepage/?nam=' + $("#SearchTxt").val() + '&' + 'cate=' + cate;
+            }
+            else
+              window.location = '../homepage/?nam=' + $("#SearchTxt").val();
           });
     </script>
   </body>

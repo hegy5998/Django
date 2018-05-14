@@ -40,9 +40,7 @@
         <div class="col-lg-3">
           <h1 class="my-4">鬍子的寶庫</h1>
           <div class="list-group">
-          {% for catedict in catedict %}
-            <a href="/homepage/?cate={{catedict.cateid}}" class="list-group-item">{{catedict.catename}}</a>
-          {% endfor %}
+              {% include 'index_category.html'%}
           </div>
         </div>
         <!-- /.col-lg-3 -->
@@ -101,7 +99,6 @@
       <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
       </div>
-      <!-- /.container -->
     </footer>
   </body>
 </html>

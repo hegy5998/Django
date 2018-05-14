@@ -1,0 +1,20 @@
+<div class="list-group">
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne" style="padding:0;">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="width: 100%;text-align: left;">
+                產品分類
+                </button>
+            </h5>           
+            </div>  
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body" style="padding: 0;">
+                {% for catedict in catedict %}
+                    <a href="/homepage/?cate={{catedict.cateid}}" class="list-group-item">{{catedict.catename}}</a>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
